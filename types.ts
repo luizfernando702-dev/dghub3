@@ -46,7 +46,7 @@ export interface OrcamentoExterno {
   created_at: string;
   updated_at: string;
   transportadoras?: {
-    url_logo: string;
+    logo_url: string;
   };
 }
 

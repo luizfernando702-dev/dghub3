@@ -3968,12 +3968,11 @@ export const App: React.FC = () => {
   }, []);
 
   const fetchExternalQuotes = async (cotacaoId: string) => {
-    if (!cotacaoId) return;
     setIsLoadingExternalQuotes(true);
     try {
       const { data, error } = await supabase
         .from("orcamentos_externos")
-        .select("*")
+        .select("*, transportadoras(logo_url)")
         .eq("cotacao_id", cotacaoId)
         .order("valor_frete", { ascending: true });
 
@@ -4071,9 +4070,6 @@ export const App: React.FC = () => {
         observacoes: quote.observacoes,
       }));
 
-      const carrierLogo = carrierList.find(c => c.nome_fantasia === quote.transportadora)?.url_logo || 
-                         carrierList.find(c => c.nome_fantasia === quote.transportadora)?.logo;
-
       // Set selectedOption for the modal
       setSelectedOption({
         id: quote.id,
@@ -4082,7 +4078,7 @@ export const App: React.FC = () => {
         leadTime: quote.prazo,
         cost: quote.valor_frete,
         source: "external",
-        logo: carrierLogo,
+        logo: quote.transportadoras?.logo_url,
       });
 
       setIsExternalQuotesListOpen(false);
@@ -14295,18 +14291,15 @@ Peso total: ${totalWeight?.toFixed(2) || "0"}kg Volumes: ${volumes}`;
                           100
                         : 0;
 
-                    const carrierLogo = carrierList.find(c => c.nome_fantasia === quote.transportadora)?.url_logo || 
-                                       carrierList.find(c => c.nome_fantasia === quote.transportadora)?.logo;
-
                     return (
                       <div
                         key={quote.id}
                         className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-blue-300 transition-all flex items-center gap-4 shadow-sm"
                       >
                         <div className="w-16 h-16 flex items-center justify-center bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
-                          {carrierLogo ? (
+                          {quote.transportadoras?.logo_url ? (
                             <img
-                              src={carrierLogo}
+                              src={quote.transportadoras.logo_url}
                               alt={quote.transportadora}
                               className="max-w-full max-h-full object-contain"
                             />
