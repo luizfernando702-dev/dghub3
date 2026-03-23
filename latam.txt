@@ -1,0 +1,117 @@
+126:  LatamAbrangencia,
+127:  LatamAeroporto,
+128:  LatamVeloz,
+129:  LatamEfacilTariff,
+130:  LatamStandard,
+131:  LatamTarifaSt,
+196:const LOGO_LATAM = `${SUPABASE_URL}/storage/v1/object/public/logos_simulador/latam.png`;
+573:  const [latamAirport, setLatamAirport] = useState("");
+649:    useState<"percentual_nf" | "liberacao_latam" | "servicos">("percentual_nf");
+650:  const [latamAirportsList, setLatamAirportsList] = useState<LatamAeroporto[]>([]);
+651:  const [isLoadingLatamAirports, setIsLoadingLatamAirports] = useState(false);
+681:  const [latamOptions, setLatamOptions] = useState<FreightOption[]>([]);
+913:  // 6 — LATAM Cargo
+916:      if (!showResults) setLatamOptions([]);
+920:    const calculateLatam = async () => {
+922:        setLatamOptions([]);
+925:        const latamConfigs = servicosConfigList.filter((s) =>
+926:          s.transportadora.toUpperCase().includes("LATAM"),
+928:        const anyActive = latamConfigs.some((c) => c.ativo);
+931:        // NEW: If UF is GO, we don't show LATAM (based on user request)
+933:          setLatamOptions([]);
+937:        const getLatamLogo = (serviceName: string) => {
+942:          return LOGO_LATAM;
+949:          latamConfigs.forEach((config) => {
+952:                id: `latam-${config.servico.toLowerCase().replace(/\s+/g, "-")}`,
+953:                carrier: "LATAM Cargo",
+958:                logo: getLatamLogo(config.servico),
+963:          setLatamOptions(options);
+967:        // B. Query latam_abrangencia using codigo_fiscal
+969:          .from("latam_abrangencia")
+976:          const efacilConfig = latamConfigs.find(
+986:                id: "latam-efacil",
+987:                carrier: "LATAM Cargo",
+997:                id: "latam-efacil",
+998:                carrier: "LATAM Cargo",
+1008:                .from("latam_efacil")
+1015:                  id: "latam-efacil",
+1016:                  carrier: "LATAM Cargo",
+1026:                  id: "latam-efacil",
+1027:                  carrier: "LATAM Cargo",
+1044:                    id: "latam-efacil",
+1045:                    carrier: "LATAM Cargo",
+1057:                    id: "latam-efacil",
+1058:                    carrier: "LATAM Cargo",
+1076:          const standardConfig = latamConfigs.find((c) =>
+1082:                id: "latam-standard",
+1083:                carrier: "LATAM Cargo",
+1093:                .from("latam_standard")
+1100:                  id: "latam-standard",
+1101:                  carrier: "LATAM Cargo",
+1111:                  .from("latam_tarifas_st")
+1130:                    id: "latam-standard",
+1131:                    carrier: "LATAM Cargo",
+1141:                    id: "latam-standard",
+1142:                    carrier: "LATAM Cargo",
+1160:          const velozConfig = latamConfigs.find((c) =>
+1166:                id: "latam-veloz",
+1167:                carrier: "LATAM Cargo",
+1177:                .from("latam_veloz")
+1184:                  id: "latam-veloz",
+1185:                  carrier: "LATAM Cargo",
+1206:                  id: "latam-veloz",
+1207:                  carrier: "LATAM Cargo",
+1222:        setLatamOptions(options);
+1224:        console.error("Erro ao calcular LATAM:", err);
+1228:    calculateLatam();
+1815:  // Latam Data
+1816:  const [latamAbrangencia, setLatamAbrangencia] = useState<LatamAbrangencia[]>(
+1819:  const [latamAeroportos, setLatamAeroporto] = useState<LatamAeroporto[]>([]);
+1820:  const [latamVeloz, setLatamVeloz] = useState<LatamVeloz[]>([]);
+1821:  const [latamEfacil, setLatamEfacil] = useState<LatamEfacilTariff[]>([]);
+1822:  const [latamStandard, setLatamStandard] = useState<LatamStandard[]>([]);
+1823:  const [latamTarifaSt, setLatamTarifaSt] = useState<LatamTarifaSt[]>([]);
+3080:  const fetchLatamAirportsList = useCallback(async () => {
+3081:    setIsLoadingLatamAirports(true);
+3083:      const data = await getCachedData("latam_aeroportos", (query) => query.order("aeroporto", { ascending: true }));
+3084:      setLatamAirportsList(data || []);
+3086:      console.error("Error fetching Latam airports", err);
+3088:      setIsLoadingLatamAirports(false);
+3104:  const fetchLatamData = useCallback(async () => {
+3115:    if (settingsTab === "liberacao_latam") {
+3116:      fetchLatamAirportsList();
+3120:  }, [settingsTab, fetchLatamAirportsList, fetchServicosConfig]);
+3158:  const handleToggleLatamAirport = async (id: number, currentStatus: boolean) => {
+3161:        .from("latam_aeroportos")
+3168:      setLatamAirportsList((prev) =>
+3174:      console.error("Error updating Latam airport status:", err);
+3487:    fetchLatamData();
+3501:    fetchLatamData,
+4206:    if (latamOptions.length > 0) {
+4207:      combined.push(...latamOptions);
+4233:    latamOptions,
+4482:          setLatamAirport(data.prefixo_aeroporto_final || "");
+4492:          setLatamAirport("");
+4509:      setLatamAirport("");
+4661:    setLatamAirport("");
+4764:      "Latam veloz": "Veloz Latam",
+4765:      "Latam Standard": "Standard Latam",
+4766:      Efacil: "éFacil Latam",
+4986:        selectedOption.id === "latam-veloz" &&
+5012:          selectedOption.id === "latam-veloz" ||
+5017:        selectedOption.id === "latam-veloz" &&
+5037:        if (selectedOption.carrier.includes("Latam")) {
+5038:          standardizedCarrier = "Latam Cargo";
+5090:          selectedOption.id === "latam-veloz" ||
+5103:        notas: (selectedOption.id === "latam-veloz" && complementaryData.velozRetiradaType === "terceiro") 
+9603:                  onClick={() => setSettingsTab("liberacao_latam")}
+9604:                  className={`px-6 py-3 font-bold text-sm transition-all border-b-2 ${settingsTab === "liberacao_latam" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}
+9606:                  Liberação Latam
+9794:              {settingsTab === "liberacao_latam" && (
+9810:                          {isLoadingLatamAirports ? (
+9820:                          ) : latamAirportsList.length > 0 ? (
+9821:                            latamAirportsList.map((airport) => (
+9841:                                      handleToggleLatamAirport(
+12631:                selectedOption.id === "latam-veloz" ||
+12656:              {/* Line 5: Veloz Latam Specific */}
+12657:              {selectedOption.id === "latam-veloz" && (
